@@ -5,6 +5,8 @@
 # source venv/bin/activate  # On Windows use: venv\Scripts\activate
 
 # pip install flask google-generativeai python-dotenv pydantic
+# or
+# python -m pip install -r requirements.txt
 
 # RUN: python app.py
 
