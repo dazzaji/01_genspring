@@ -1,0 +1,13 @@
+# Exclude working files directory
+WORKING_FILES/
+
+# Exclude specific files
+plan_structure.json
+.env
+
+# Optional: Exclude virtual environment directory
+.venv/
+
+
+# Text File
+app_2024-11-10_01-00-02_output.log
