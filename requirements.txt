@@ -1,0 +1,7 @@
+# Requirements
+# python -m pip install -r requirements.txt
+
+flask 
+google-generativeai 
+python-dotenv 
+pydantic
