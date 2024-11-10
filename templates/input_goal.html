@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Plan Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        .loading {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Project Plan Generator</h1>
+        <p>Enter your project goal below, and we'll generate a structured plan outline.</p>
+        
+        <form id="goalForm" action="/generate_plan" method="POST">
+            <div class="form-group">
+                <label for="goal">Project Goal:</label>
+                <textarea id="goal" name="goal" required
+                    placeholder="Describe your project goal in detail. Be specific to get the best results."></textarea>
+            </div>
+            
+            <button type="submit">Generate Plan</button>
+        </form>
+        
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Generating your plan structure... This may take a few moments.</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('goalForm').addEventListener('submit', function(e) {
+            document.getElementById('loading').style.display = 'block';
+        });
+    </script>
+</body>
+</html>

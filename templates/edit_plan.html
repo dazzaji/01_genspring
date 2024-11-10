@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Plan Structure</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin: 0 0 40px 0;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #edf2f7;
+            font-size: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 35px;
+        }
+
+        .form-group > label {
+            display: block;
+            font-size: 18px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 12px;
+        }
+
+        .step-container {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .step-criteria {
+            background-color: white;
+        }
+
+        #measuresContainer {
+            display: grid;
+            gap: 16px;
+        }
+
+        .success-measure {
+            min-height: 80px;
+        }
+
+        .buttons {
+            margin-top: 40px;
+            display: flex;
+            gap: 16px;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .save-button {
+            background-color: #38a169;
+            color: white;
+        }
+
+        .save-button:hover {
+            background-color: #2f855a;
+            transform: translateY(-1px);
+        }
+
+        .regenerate-button {
+            background-color: #718096;
+            color: white;
+        }
+
+        .regenerate-button:hover {
+            background-color: #4a5568;
+            transform: translateY(-1px);
+        }
+
+        .success-message, .error-message {
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .success-message {
+            background-color: #c6f6d5;
+            color: #2f855a;
+            border: 1px solid #9ae6b4;
+        }
+
+        .error-message {
+            background-color: #fed7d7;
+            color: #c53030;
+            border: 1px solid #feb2b2;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+                margin-bottom: 30px;
+            }
+
+            .step-container {
+                padding: 15px;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Review and Edit Plan Structure</h1>
+        <div id="successMessage" class="success-message"></div>
+        <div id="errorMessage" class="error-message"></div>
+        
+        <form id="planForm" method="POST" action="/save_plan">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" value="{{ plan.Title }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="goal">Original Goal</label>
+                <textarea id="goal" name="goal" readonly>{{ plan.Original_Goal }}</textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="summary">Overall Summary</label>
+                <textarea id="summary" name="summary" required>{{ plan.Overall_Summary }}</textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Detailed Outline</label>
+                <div id="stepsContainer">
+                    {% for step in plan.Detailed_Outline %}
+                    <div class="step-container">
+                        <label>Step Name</label>
+                        <input type="text" class="step-name" value="{{ step.name }}" required>
+                        
+                        <label>Step Content</label>
+                        <textarea class="step-content" required>{{ step.content }}</textarea>
+                        
+                        <label>Evaluation Criteria</label>
+                        <textarea class="step-criteria" required>{{ plan.Evaluation_Criteria[step.name] }}</textarea>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Success Measures</label>
+                <div id="measuresContainer">
+                    {% for measure in plan.Success_Measures %}
+                    <textarea class="success-measure" required>{{ measure }}</textarea>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="buttons">
+                <button type="submit" class="save-button">Save Plan & Continue</button>
+                <button type="button" class="regenerate-button" onclick="window.location.href='/'">Start Over</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('planForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const plan = {
+                Title: document.getElementById('title').value,
+                Original_Goal: document.getElementById('goal').value,
+                Overall_Summary: document.getElementById('summary').value,
+                Detailed_Outline: [],
+                Evaluation_Criteria: {},
+                Success_Measures: []
+            };
+            
+            const stepContainers = document.querySelectorAll('.step-container');
+            stepContainers.forEach(container => {
+                const name = container.querySelector('.step-name').value;
+                const content = container.querySelector('.step-content').value;
+                const criteria = container.querySelector('.step-criteria').value;
+                
+                plan.Detailed_Outline.push({ name, content });
+                if (criteria.trim()) {
+                    plan.Evaluation_Criteria[name] = criteria;
+                }
+            });
+            
+            document.querySelectorAll('.success-measure').forEach(measure => {
+                if (measure.value.trim()) {
+                    plan.Success_Measures.push(measure.value);
+                }
+            });
+            
+            fetch('/save_plan', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(plan)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    const errorMessage = document.getElementById('errorMessage');
+                    errorMessage.textContent = data.error;
+                    errorMessage.style.display = 'block';
+                    document.getElementById('successMessage').style.display = 'none';
+                } else {
+                    const successMessage = document.getElementById('successMessage');
+                    successMessage.textContent = 'Plan saved successfully!';
+                    if (data.next_step) {
+                        successMessage.textContent += ' ' + data.next_step;
+                    }
+                    successMessage.style.display = 'block';
+                    document.getElementById('errorMessage').style.display = 'none';
+                }
+            })
+            .catch(error => {
+                const errorMessage = document.getElementById('errorMessage');
+                errorMessage.textContent = 'An error occurred while saving the plan.';
+                errorMessage.style.display = 'block';
+                document.getElementById('successMessage').style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
