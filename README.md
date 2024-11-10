@@ -1,3 +1,3 @@
 # 01_genspring
 
-For initial flask deploy
+For initial flask deployment
